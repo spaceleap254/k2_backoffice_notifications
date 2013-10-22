@@ -1,5 +1,6 @@
 require 'sinatra'
 require 'json'
+helpers Response
 
 get '/' do
   "Go to /httppost_v2.json for the JSON response for HTTP POST notifications. More to come..."
@@ -28,7 +29,7 @@ end
 
 post '/xml_http_v2.xml' do
   content_type 'text/xml'
-  success_response
+  success
   "<?xml version = '1.0' encoding = 'UTF-8'?>
 <transaction_response>
     <internal_transaction_id>3222</internal_transaction_id>
@@ -39,7 +40,8 @@ post '/xml_http_v2.xml' do
 </transaction_response>"
 end
 
-  def success_response
+module Response
+  def success
     @description = "Accepted"
     @reference = params[:transaction_reference]
     @first_name = params[:first_name]
@@ -50,9 +52,9 @@ end
     end
   end
 
-  def failure_response
+  def failure
   end
-
+end
 
 
 
