@@ -12,7 +12,7 @@ post '/httppost_v2.json' do
   first_name = params[:first_name]
   last_name = params[:last_name]
   if !reference.empty? && !first_name.empty? && !last_name.empty?
-  	subscriber_message = "Subscriber message works for HTTP POST V2! Transaction reference: #{params[:transaction_reference]}. Customer: #{params[:first_name]} #{params[:last_name]}."
+  	subscriber_message = "Subscriber message for HTTP POST V2! Transaction reference: #{params[:transaction_reference]}. Customer: #{params[:first_name]} #{params[:last_name]}."
   else
   	subscriber_message = ""
   end
@@ -46,7 +46,7 @@ end
     @last_name = params[:last_name]
     @subscriber_message = ""
     if !@reference.empty? && !@first_name.empty? && !@last_name.empty?
-      @subscriber_message = "Subscriber message works! Transaction reference: #{@reference}. Customer: #{@first_name} #{@last_name}."
+      @subscriber_message = "Subscriber message for XML HTTP V2! Transaction reference: #{@reference}. Customer: #{@first_name} #{@last_name}."
     end
   end
 
