@@ -42,7 +42,7 @@ post '/xml_http_v2.xml' do
     <transaction_reference>#{reference}</transaction_reference>
     <status>01</status>
     <description>#{description}</description>
-    <subscriber_message>#{subscriber_message}</subscriber_message>
+    <subscriber_message>ee</subscriber_message>
 </transaction_response>"
 end
 
