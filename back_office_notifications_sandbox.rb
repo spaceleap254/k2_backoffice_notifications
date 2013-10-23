@@ -11,7 +11,7 @@ post '/httppost_v2.json' do
   reference = params[:transaction_reference]
   first_name = params[:first_name]
   last_name = params[:last_name]
-  if !reference.empty? && !first_name.empty? && !last_name.empty?
+  if !reference.nil? && !first_name.nil? && !last_name.nil?
   	subscriber_message = "Subscriber message for HTTP POST V2! Transaction reference: #{params[:transaction_reference]}. Customer: #{params[:first_name]} #{params[:last_name]}."
   else
   	subscriber_message = ""
@@ -32,11 +32,8 @@ post '/xml_http_v2.xml' do
     reference = params[:transaction_reference]
     first_name = params[:first_name]
     last_name = params[:last_name]
-    puts reference
-    puts first_name
-    puts last_name
     subscriber_message = ""
-    if !reference.empty? && !first_name.empty? && !last_name.empty?
+    if !reference.nil? && !first_name.nil? && !last_name.nil?
       subscriber_message = "Subscriber message for XML HTTP V2! Transaction reference: #{reference}. Customer: #{first_name} #{last_name}."
     end
     content_type 'text/xml'
@@ -46,7 +43,7 @@ post '/xml_http_v2.xml' do
     <transaction_reference>#{reference}</transaction_reference>
     <status>01</status>
     <description>#{description}</description>
-    <subscriber_message>ee</subscriber_message>
+    <subscriber_message>#{subscriber_message}</subscriber_message>
 </transaction_response>"
 end
 
