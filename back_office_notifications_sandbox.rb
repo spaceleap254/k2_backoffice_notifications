@@ -1,6 +1,5 @@
 require 'sinatra'
 require 'json'
-helpers Response
 
 get '/' do
   "Go to /httppost_v2.json for the JSON response for HTTP POST notifications. More to come..."
