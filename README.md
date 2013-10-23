@@ -8,3 +8,4 @@ Currently only supports Kopo Kopo's version 2 API. The sandbox is hosted on Hero
 TODO
 ----
 1. Create hook that shows use of HMAC message authentication
+2. Create examples for failed reconciliation
