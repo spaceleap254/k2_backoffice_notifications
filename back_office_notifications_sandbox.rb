@@ -27,10 +27,14 @@ post '/httppost_v2_hmac.json' do
 end
 
 post '/xml_http_v2.xml' do
+
     description = "Accepted"
     reference = params[:transaction_reference]
     first_name = params[:first_name]
     last_name = params[:last_name]
+    puts reference
+    puts first_name
+    puts last_name
     subscriber_message = ""
     if !reference.empty? && !first_name.empty? && !last_name.empty?
       subscriber_message = "Subscriber message for XML HTTP V2! Transaction reference: #{reference}. Customer: #{first_name} #{last_name}."
