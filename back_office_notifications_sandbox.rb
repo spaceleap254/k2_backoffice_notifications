@@ -29,31 +29,22 @@ end
 
 post '/xml_http_v2.xml' do
   content_type 'text/xml'
-  success
+    description = "Accepted"
+    reference = params[:transaction_reference]
+    first_name = params[:first_name]
+    last_name = params[:last_name]
+    subscriber_message = ""
+    if !reference.empty? && !first_name.empty? && !last_name.empty?
+      subscriber_message = "Subscriber message for XML HTTP V2! Transaction reference: #{reference}. Customer: #{first_name} #{last_name}."
+    end
   "<?xml version = '1.0' encoding = 'UTF-8'?>
 <transaction_response>
     <internal_transaction_id>3222</internal_transaction_id>
-    <transaction_reference>#{@reference}</transaction_reference>
+    <transaction_reference>#{reference}</transaction_reference>
     <status>01</status>
-    <description>#{@description}</description>
-    <subscriber_message>#{@subscriber_message}</subscriber_message>
+    <description>#{description}</description>
+    <subscriber_message>#{subscriber_message}</subscriber_message>
 </transaction_response>"
-end
-
-module Response
-  def success
-    @description = "Accepted"
-    @reference = params[:transaction_reference]
-    @first_name = params[:first_name]
-    @last_name = params[:last_name]
-    @subscriber_message = ""
-    if !@reference.empty? && !@first_name.empty? && !@last_name.empty?
-      @subscriber_message = "Subscriber message for XML HTTP V2! Transaction reference: #{@reference}. Customer: #{@first_name} #{@last_name}."
-    end
-  end
-
-  def failure
-  end
 end
 
 
