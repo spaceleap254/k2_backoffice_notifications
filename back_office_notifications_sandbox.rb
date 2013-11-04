@@ -1,5 +1,7 @@
 require 'sinatra'
 require 'json'
+require 'nokogiri'
+require 'pp'
 
 get '/' do
   "Go to /httppost_v2.json for HTTP POST notifications and /xml_http_v2.xml for XML over HTTP notifications."
@@ -28,10 +30,24 @@ end
 
 post '/xml_http_v2.xml' do
   description = "Accepted"
-  reference = params[:transaction_reference]
-  first_name = params[:first_name]
-  last_name = params[:last_name]
+  reference = ""
+  first_name = ""
+  last_name = ""
   subscriber_message = ""
+  req = Nokogiri::XML::Reader(request.body)
+  pp req
+  if req
+    req.each do |node|
+      if node.name == "transaction_reference"
+        reference = node.inner_xml
+      elsif node.name == "first_name"
+        first_name = node.inner_xml
+      elsif node.name == "last_name"
+        last_name = node.inner_xml
+      end    
+    end
+  end
+  
   if !reference.nil? && !first_name.nil? && !last_name.nil?
     subscriber_message = "Subscriber message for XML HTTP V2! Transaction reference: #{reference}. Customer: #{first_name} #{last_name}."
   end
