@@ -11,10 +11,14 @@ URLs
 HTTP POST notifications:
 http://k2-backoffice-api-sandbox.herokuapp.com/httppost_v2.json
 
+HTTP POST notifications with HMAC Authentication :
+http://k2-backoffice-api-sandbox.herokuapp.com/httppost_v2_hmac.json
+
 XML over HTTP notifications:
 http://k2-backoffice-api-sandbox.herokuapp.com/xml_http_v2.xml
 
 TODO
 ----
-1. Create hook that shows use of HMAC message authentication
+1. Basic authentication (do this after moving the params to the header)
 2. Create examples for failed reconciliation
+ 
