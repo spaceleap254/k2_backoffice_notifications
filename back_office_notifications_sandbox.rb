@@ -2,6 +2,7 @@ require 'sinatra'
 require 'json'
 require 'nokogiri'
 require 'pp'
+require 'openssl'
 
 get '/' do
   "Go to /httppost_v2.json for HTTP POST notifications and /xml_http_v2.xml for XML over HTTP notifications."
@@ -23,10 +24,17 @@ post '/httppost_v2.json' do
   { :status => '01', :description => description, :subscriber_message => subscriber_message }.to_json
 end
 
-post '/httppost_v2_failed_reconciliation.json' do
+post '/httppost_v2_hmac.json' do
+  status 200
+  description = "Accepted"
+  api_key = "87f34b467b67e3dbcae26f318b7c19f92365d9db" #this is my API key generated on a test environment
+  base_string = params.except('username', 'password').to_query #we are fixing this. These params should be in the header
+  signature = Base64.strict_encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), api_key, base_string))
+  content_type :json
+  { :status => '01', :description => description, :subscriber_message => signature }.to_json
 end
 
-post '/httppost_v2_hmac.json' do
+post '/httppost_v2_failed_reconciliation.json' do
 end
 
 post '/xml_http_v2.xml' do
