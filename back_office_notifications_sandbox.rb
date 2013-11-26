@@ -3,6 +3,8 @@ require 'json'
 require 'nokogiri'
 require 'pp'
 require 'openssl'
+require 'addressable/uri'
+require 'base64'
 
 get '/' do
   "Go to /httppost_v2.json for HTTP POST notifications and /xml_http_v2.xml for XML over HTTP notifications."
@@ -25,13 +27,50 @@ post '/httppost_v2.json' do
 end
 
 post '/httppost_v2_hmac.json' do
-  status 200
-  description = "Accepted"
-  api_key = "87f34b467b67e3dbcae26f318b7c19f92365d9db" #this is my API key generated on a test environment
-  base_string = params.except('username', 'password').to_query #we are fixing this. These params should be in the header
+  def encode(value)
+  value = value.to_s if value.kind_of?(Symbol)
+  return Addressable::URI.encode_component(
+      value,
+      Addressable::URI::CharacterClasses::UNRESERVED
+  )
+  end
+  api_key = "87f34b467b67e3dbcae26f318b7c19f92365d9d" #this is my API key generated on a test environment
+  k2_signature = params[:signature]
+  reference = params[:transaction_reference]
+  first_name = params[:first_name]
+  middle_name = params[:middle_name]
+  last_name = params[:last_name]
+  #the username and password will be moved to the header (as should be the case) soon
+  params.delete('username')
+  params.delete('password')
+
+  params.delete('signature')
+  base_string =  ((params.to_a.map do |(key, value)|
+                   [key.to_s, value.to_s]
+                 end).sort.inject([]) do |accu, (key, value)|
+                   accu << encode(key) + '=' + encode(value)
+                   accu
+                 end).join('&')
+  
   signature = Base64.strict_encode64(OpenSSL::HMAC.digest(OpenSSL::Digest::Digest.new('sha1'), api_key, base_string))
+
   content_type :json
-  { :status => '01', :description => description, :subscriber_message => signature }.to_json
+  puts k2_signature
+  puts signature
+  if k2_signature == signature   
+    status 200
+    result = {}
+    description = "Accepted"
+    if !reference.nil? && !first_name.nil? && !last_name.nil?
+      subscriber_message = "Subscriber message for HTTP POST V2 HMAC AUTHENTICATED! Transaction reference: #{reference}. Customer: #{first_name} #{middle_name} #{last_name}."
+    end
+    result = { :status => '01', :description => description, :subscriber_message => subscriber_message }.to_json
+  else
+    status 400
+    description = "HMAC Authentication failed. Untrusted source."
+    result = { :status => '', :description => '', :subscriber_message => "" }.to_json
+  end
+  result
 end
 
 post '/httppost_v2_failed_reconciliation.json' do
