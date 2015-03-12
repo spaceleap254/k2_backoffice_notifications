@@ -7,7 +7,7 @@ require 'addressable/uri'
 require 'base64'
 
 get '/' do
-  "Go to /httppost_v2.json for HTTP POST notifications and /xml_http_v2.xml for XML over HTTP notifications."
+  "Go to /httppost_v2.json"
 end
 
 post '/httppost_v2.json' do
