@@ -34,7 +34,7 @@ post '/httppost_v2_hmac.json' do
       Addressable::URI::CharacterClasses::UNRESERVED
   )
   end
-  api_key = "87f34b467b67e3dbcae26f318b7c19f92365d9db" #this is my API key generated on a test environment
+  api_key = "8b9ff59121c213a832fc1e3973fa364338c78671" #this is my API key generated on a test environment
   k2_signature = params[:signature]
   reference = params[:transaction_reference]
   first_name = params[:first_name]
