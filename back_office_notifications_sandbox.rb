@@ -7,7 +7,7 @@ require 'addressable/uri'
 require 'base64'
 
 get '/' do
-  "Go to /httppost_v2.json"
+  "/httppost_v2.json"
 end
 
 post '/httppost_v2.json' do
